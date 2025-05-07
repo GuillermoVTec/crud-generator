@@ -2,20 +2,21 @@
 
 Este paquete permite generar CRUDs completos de forma automática en tus proyectos Laravel con un solo comando Artisan.
 
-🔧 Ideal para acelerar el desarrollo de paneles administrativos, prototipos y sistemas personalizados.
+🔧 Ideal para acelerar el desarrollo de paneles administrativos, sistemas personalizados, prototipos y MVPs.
 
 ---
 
 ## 🚀 Características
 
-- Crea automáticamente:
-  - 🧠 Modelo (`app/Models`)
-  - ⚙️ Controlador (`app/Http/Controllers`)
-  - 📄 Vistas Blade (`resources/views`)
-  - 🛤️ Rutas (puedes agregarlas fácilmente con `Route::resource`)
-  - 🧱 Migración con campos definidos
+Genera automáticamente:
 
-- Usa stubs personalizables para control total sobre la estructura del código generado.
+- 🧠 Modelo (`app/Models`)
+- ⚙️ Controlador (`app/Http/Controllers`)
+- 🧱 Migración con los campos definidos (`database/migrations`)
+- 📄 Vistas Blade (`resources/views`): `index`, `create`, `edit`
+- 🛤️ Sugerencia de ruta para agregar en `routes/web.php`
+
+✔ Usa stubs personalizables para tener control completo sobre el código generado.
 
 ---
 
@@ -37,40 +38,55 @@ En el `composer.json` de tu proyecto Laravel, agrega:
     "url": "../laravel-packages/crud-generator"
   }
 ]
+Luego instala el paquete con:
 
-
-luego ejecuta 
+bash
+Copiar
+Editar
 composer require guillermovenanciotecucan/crud-generator:dev-main
-
-uso de comando
+📦 Uso del comando
+bash
+Copiar
+Editar
 php artisan make:crud NombreDelModelo --fields="campo1:string,campo2:integer"
-ejempo 
-php artisan make:crud Producto --fields="nombre:string,precio:decimal"
+🔹 Ejemplo:
 
+bash
+Copiar
+Editar
+php artisan make:crud Producto --fields="nombre:string,precio:decimal"
 Genera:
 
 app/Models/Producto.php
 
 app/Http/Controllers/ProductoController.php
 
-resources/views/productos/
+resources/views/productos/index.blade.php
 
-Migración create_productos_table
+resources/views/productos/create.blade.php
 
+resources/views/productos/edit.blade.php
 
-puedes publicar los stubs para editarlos desde tu proyecto 
+database/migrations/xxxx_xx_xx_create_productos_table.php
 
+📌 También te sugerirá automáticamente la línea que puedes copiar en routes/web.php:
+
+php
+Copiar
+Editar
+Route::resource('productos', ProductoController::class);
+✏️ Personalización
+Puedes publicar los stubs para modificarlos a tu gusto:
+
+bash
+Copiar
+Editar
 php artisan vendor:publish --tag=crud-stubs
-
- Licencia
+📄 Licencia
 Este proyecto está bajo la licencia MIT.
-Autor
+
+👨‍💻 Autor
 Guillermo Venancio Tec Ucan
-guillermo.v.tec.ucan@gmail.com
+📧 guillermo.v.tec.ucan@gmail.com
 
-¡Gracias por usar este generador!
-
-
----
-
-
+¡Gracias por usar este generador! Si te resultó útil, compártelo con otros desarrolladores 🚀

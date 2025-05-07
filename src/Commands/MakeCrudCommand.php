@@ -45,15 +45,45 @@ class MakeCrudCommand extends Command
         $modelContent = str_replace('{{model}}', $model, File::get($modelStub));
         File::put(app_path("Models/{$model}.php"), $modelContent);
 
-        // Creamos la migración si hay campos
-        if ($fields) {
-            $this->call('make:migration', [
-                'name' => "create_{$viewFolder}_table",
-                '--create' => $viewFolder,
-            ]);
-        }
+
 
         $this->info("✅ CRUD para {$model} generado correctamente.");
+        if ($fields) {
+					    $this->generateMigration($model, $fields);
+					    $this->info("🧱 Migración para la tabla '" . \Str::snake(\Str::pluralStudly($model)) . "' creada.");
+					}
+			// Crear vistas desde stubs
+		$views = ['index', 'create', 'edit'];
+		foreach ($views as $view) {
+		    $stubPath = __DIR__ . "/../../stubs/view.{$view}.stub";
+		    $viewContent = File::get($stubPath);
+		    $viewContent = str_replace(['{{model}}', '{{viewFolder}}'], [$model, $viewFolder], $viewContent);
+
+		    File::put(resource_path("views/{$viewFolder}/{$view}.blade.php"), $viewContent);
+		}
+		$this->info("📄 Vistas Blade generadas en resources/views/{$viewFolder}");
+
+
     }
+	    protected function generateMigration($model, $fields)
+	{
+	    $table = \Str::snake(\Str::pluralStudly($model));
+	    $migrationName = 'create_' . $table . '_table';
+	    $timestamp = now()->format('Y_m_d_His');
+	    $fileName = $timestamp . '_' . $migrationName . '.php';
+	    $path = database_path("migrations/{$fileName}");
+
+	    $fieldLines = '';
+	    foreach (explode(',', $fields) as $field) {
+	        [$name, $type] = explode(':', $field);
+	        $fieldLines .= "            \$table->{$type}('{$name}');\n";
+	    }
+
+	    $stub = file_get_contents(__DIR__ . '/../../stubs/migration.stub');
+	    $stub = str_replace(['{{table}}', '{{fields}}'], [$table, $fieldLines], $stub);
+
+	    file_put_contents($path, $stub);
+	}
+
 }
 
