@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\{{model}};
+use Illuminate\Http\Request;
+
+class {{model}}Controller extends Controller
+{
+    public function index()
+    {
+        $items = {{model}}::all();
+        return view('{{viewFolder}}.index', compact('items'));
+    }
+
+    public function create()
+    {
+        return view('{{viewFolder}}.create');
+    }
+
+    public function store(Request $request)
+    {
+        {{model}}::create($request->all());
+        return redirect()->route('{{viewFolder}}.index')->with('success', '{{model}} creado.');
+    }
+
+    public function edit({{model}} $item)
+    {
+        return view('{{viewFolder}}.edit', compact('item'));
+    }
+
+    public function update(Request $request, {{model}} $item)
+    {
+        $item->update($request->all());
+        return redirect()->route('{{viewFolder}}.index')->with('success', '{{model}} actualizado.');
+    }
+
+    public function destroy({{model}} $item)
+    {
+        $item->delete();
+        return redirect()->route('{{viewFolder}}.index')->with('success', '{{model}} eliminado.');
+    }
+}
