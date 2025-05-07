@@ -1,5 +1,5 @@
 {
-  "name": "guillermovenanciotecucan/crud-generator",
+  "name": "guillermovtec/crud-generator",
   "description": "Generador automático de CRUDs para Laravel",
   "type": "library",
   "license": "MIT",
@@ -28,3 +28,4 @@
   "minimum-stability": "dev",
   "prefer-stable": true
 }
+
